@@ -2,8 +2,10 @@
 {
     public class Product
     {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public int Code { get; set; }
+        public int Id { get; set; }             // первичный ключ
+        public string Name { get; set; }        // название продукта
+        public int Code { get; set; }           // код продукта
+        public int Price { get; set; }
+
     }
 }

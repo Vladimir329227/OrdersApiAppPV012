@@ -1,8 +1,12 @@
 using OrdersApiAppPV012.Model;
 using OrdersApiAppPV012.Model.Entity;
 using OrdersApiAppPV012.Service;
-using OrdersApiAppPV012.Service.Controllers;
-using OrdersApiAppPV012.Service.IDao;
+using OrdersApiAppPV012.Service.BillService;
+using OrdersApiAppPV012.Service.ClientService;
+using OrdersApiAppPV012.Service.OrderInfoService;
+using OrdersApiAppPV012.Service.OrderService;
+using OrdersApiAppPV012.Service.OrderProductService;
+using OrdersApiAppPV012.Service.ProductService;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +16,9 @@ builder.Services.AddTransient<IDaoClient, ClientsController>();
 builder.Services.AddTransient<IDaoOrder, OrderController>();
 builder.Services.AddTransient<IDaoOrderProduct, OrderProductController>();
 builder.Services.AddTransient<IDaoProduct, ProductController>();
+builder.Services.AddTransient<IDaoOrderInfo, OrderInfoController>();
+builder.Services.AddTransient<IDaoBill, BillController>();
+
 
 
 var app = builder.Build();
@@ -123,6 +130,18 @@ app.MapPost("/product/update", async (HttpContext context, int Id, Product produ
 app.MapGet("/product/delete", async (HttpContext context, int Id, IDaoProduct dao) =>
 {
     return await dao.Delete(Id);
+});
+
+// бизнес логика
+
+app.MapGet("/order/bill",  (HttpContext context, int Id, IDaoBill dao) =>
+{
+    return dao.GetBill(Id).ToString();
+});
+
+app.MapGet("/order/info", async (HttpContext context, int Id, IDaoOrderInfo dao) =>
+{
+    return await dao.GetInfo(Id);
 });
 
 app.Run();

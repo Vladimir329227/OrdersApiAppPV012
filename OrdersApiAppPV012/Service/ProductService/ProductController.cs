@@ -1,11 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using OrdersApiAppPV012.Model.Entity;
 using OrdersApiAppPV012.Model;
-using OrdersApiAppPV012.Service.IDao;
 
-namespace OrdersApiAppPV012.Service.Controllers
+namespace OrdersApiAppPV012.Service.ProductService
 {
-    public class ProductController : IDaoProduct
+    public class ProductController : IDaoProduct                                // CRUD операции для Product
     {
         private readonly ApplicationDbContext _context;
 
@@ -27,14 +26,14 @@ namespace OrdersApiAppPV012.Service.Controllers
         {
             if (id == null || _context.Products == null)
             {
-                return null;
+                throw new NotImplementedException();
             }
 
             var product = _context.Products
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (product == null)
             {
-                return null;
+                throw new NotImplementedException();
             }
 
             return Task.Run(() => product);
@@ -42,11 +41,11 @@ namespace OrdersApiAppPV012.Service.Controllers
 
         public Task<Product> Add(Product product)
         {
-            if (product == null)
+            if (product != null)
             {
                 _context.Add(product);
                 _context.SaveChangesAsync();
-                return null;
+                return Task.Run(() => product);
             }
             return Task.Run(() => product);
         }
@@ -55,7 +54,7 @@ namespace OrdersApiAppPV012.Service.Controllers
         {
             if (id != product.Id)
             {
-                return null;
+                throw new NotImplementedException();
             }
 
             if (product != null)
@@ -69,7 +68,7 @@ namespace OrdersApiAppPV012.Service.Controllers
                 {
                     if (!ProductExists(product.Id))
                     {
-                        return null;
+                        throw new NotImplementedException();
                     }
                     else
                     {
@@ -78,7 +77,7 @@ namespace OrdersApiAppPV012.Service.Controllers
                 }
                 return Task.Run(() => product);
             }
-            return null;
+            throw new NotImplementedException();
         }
 
         public async Task<bool> Delete(int id)

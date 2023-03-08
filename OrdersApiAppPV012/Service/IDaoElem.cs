@@ -2,7 +2,7 @@
 
 namespace OrdersApiAppPV012.Service
 {
-    public interface IDaoElem<T>
+    public interface IDaoElem<T>        // CRUD интерфейс 
     {
         Task<List<T>> GetAll();
         Task<T> GetById(int id);

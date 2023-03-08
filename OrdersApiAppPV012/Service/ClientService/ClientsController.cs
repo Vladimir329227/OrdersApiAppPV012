@@ -7,11 +7,10 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using OrdersApiAppPV012.Model;
 using OrdersApiAppPV012.Model.Entity;
-using OrdersApiAppPV012.Service.IDao;
 
-namespace OrdersApiAppPV012.Service.Controllers
+namespace OrdersApiAppPV012.Service.ClientService
 {
-    public class ClientsController : IDaoClient
+    public class ClientsController : IDaoClient                     // CRUD операции для Client
     {
         private readonly ApplicationDbContext _context;
 
@@ -21,7 +20,7 @@ namespace OrdersApiAppPV012.Service.Controllers
         }
         private bool ClientExists(int id)
         {
-          return (_context.Clients?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.Clients?.Any(e => e.Id == id)).GetValueOrDefault();
         }
 
         public Task<List<Client>> GetAll()
@@ -33,14 +32,14 @@ namespace OrdersApiAppPV012.Service.Controllers
         {
             if (id == null || _context.Clients == null)
             {
-                return null;
+                throw new NotImplementedException();
             }
 
             var client = _context.Clients
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (client == null)
             {
-                return null;
+                throw new NotImplementedException();
             }
 
             return Task.Run(() => client);
@@ -48,20 +47,20 @@ namespace OrdersApiAppPV012.Service.Controllers
 
         public Task<Client> Add(Client client)
         {
-            if (client == null)
+            if (client != null)
             {
                 _context.Add(client);
                 _context.SaveChangesAsync();
-                return null;
+                return Task.Run(() => client);
             }
             return Task.Run(() => client);
         }
 
-        public Task<Client> Update(int id,Client client)
+        public Task<Client> Update(int id, Client client)
         {
             if (id != client.Id)
             {
-                return null;
+                throw new NotImplementedException();
             }
 
             if (client != null)
@@ -75,7 +74,7 @@ namespace OrdersApiAppPV012.Service.Controllers
                 {
                     if (!ClientExists(client.Id))
                     {
-                        return null;
+                        throw new NotImplementedException();
                     }
                     else
                     {
@@ -84,7 +83,7 @@ namespace OrdersApiAppPV012.Service.Controllers
                 }
                 return Task.Run(() => client);
             }
-            return null;
+            throw new NotImplementedException();
         }
 
         public async Task<bool> Delete(int id)
