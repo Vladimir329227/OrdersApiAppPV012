@@ -3,14 +3,12 @@
     // сущность клиента - класс-хранилка данных о клиенте (DTO - data transfer object, data-class)
     public class Client
     {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        // навигационные сво-ва
-        public ICollection<Order> Orders { get; set; }
+        public int Id { get; set; }                         // первичный ключ
+        public string Name { get; set; }                    // навигационные сво-ва
+        public ICollection<Order> Orders { get; set; }      // список заказа клиента
 
         public Client()
         {
-            Orders = new List<Order>();
             Name = "";
         }
 
@@ -18,7 +16,6 @@
         {
             Id = id;
             Name = name;
-            Orders = new List<Order>();
         }
 
         public override string ToString()
