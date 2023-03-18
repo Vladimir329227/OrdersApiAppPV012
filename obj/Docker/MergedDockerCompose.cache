@@ -18,7 +18,14 @@ services:
     build:
       context: C:\Users\nov96\Desktop\OrdersApiAppPV012
       dockerfile: OrdersApiAppPV012/Dockerfile
+    command:
+    - dotnet
+    - ef
+    - database update
     container_name: application
+    depends_on:
+      database:
+        condition: service_started
     environment:
       ASPNETCORE_ENVIRONMENT: Development
       ASPNETCORE_URLS: https://+:443;http://+:80

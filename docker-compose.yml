@@ -12,7 +12,14 @@ services:
       dockerfile: OrdersApiAppPV012/Dockerfile
 
     networks:
-     - internal
+      - internal
+
+    depends_on:
+      - database
+
+    command: ["dotnet", "ef", "database update"]
+
+
   database:
     image: postgres:latest
     container_name: db_postgres
@@ -24,7 +31,7 @@ services:
       - 5432:5432
 
     networks:
-     - internal
+      - internal
 
 networks:
   internal:
