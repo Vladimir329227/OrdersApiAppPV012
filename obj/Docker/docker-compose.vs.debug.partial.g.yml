@@ -3,7 +3,6 @@ version: '3.4'
 services:
   ordersapiapppv012:
     image: ordersapiapppv012:dev
-    container_name: OrdersApiAppPV012_1
     build:
       target: base
       labels:

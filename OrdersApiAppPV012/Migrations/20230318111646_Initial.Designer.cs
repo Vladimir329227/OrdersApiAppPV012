@@ -11,8 +11,8 @@ using OrdersApiAppPV012.Model;
 namespace OrdersApiAppPV012.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230303164221_Initial3")]
-    partial class Initial3
+    [Migration("20230318111646_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -63,6 +63,55 @@ namespace OrdersApiAppPV012.Migrations
                     b.ToTable("Orders");
                 });
 
+            modelBuilder.Entity("OrdersApiAppPV012.Model.Entity.OrderProduct", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("Count")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("OrderId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("OrderProducts");
+                });
+
+            modelBuilder.Entity("OrdersApiAppPV012.Model.Entity.Product", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("Code")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("Price")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Products");
+                });
+
             modelBuilder.Entity("OrdersApiAppPV012.Model.Entity.Order", b =>
                 {
                     b.HasOne("OrdersApiAppPV012.Model.Entity.Client", "Client")
@@ -72,6 +121,25 @@ namespace OrdersApiAppPV012.Migrations
                         .IsRequired();
 
                     b.Navigation("Client");
+                });
+
+            modelBuilder.Entity("OrdersApiAppPV012.Model.Entity.OrderProduct", b =>
+                {
+                    b.HasOne("OrdersApiAppPV012.Model.Entity.Order", "Order")
+                        .WithMany()
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("OrdersApiAppPV012.Model.Entity.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Order");
+
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("OrdersApiAppPV012.Model.Entity.Client", b =>
