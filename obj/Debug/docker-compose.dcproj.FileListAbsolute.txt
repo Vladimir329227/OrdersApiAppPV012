@@ -30,3 +30,9 @@ C:\Users\nov96\Desktop\OrdersApiAppPV012\obj\Debug\docker-compose.dcproj.Assembl
 C:\Users\nov96\Desktop\OrdersApiAppPV012\obj\Debug\docker-compose.dcproj.CoreCompileInputs.cache
 C:\Users\nov96\Desktop\OrdersApiAppPV012\obj\Debug\docker-compose.dcproj.CopyComplete
 C:\Users\nov96\Desktop\OrdersApiAppPV012\bin\Debug\Microsoft.EntityFrameworkCore.Relational.dll
+C:\Users\nov96\Desktop\OrdersApiAppPV012\bin\Debug\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\nov96\Desktop\OrdersApiAppPV012\bin\Debug\System.IdentityModel.Tokens.Jwt.dll
+C:\Users\nov96\Desktop\OrdersApiAppPV012\bin\Debug\Microsoft.IdentityModel.Tokens.dll
+C:\Users\nov96\Desktop\OrdersApiAppPV012\bin\Debug\Microsoft.IdentityModel.Logging.dll
+C:\Users\nov96\Desktop\OrdersApiAppPV012\bin\Debug\Microsoft.IdentityModel.JsonWebTokens.dll
+C:\Users\nov96\Desktop\OrdersApiAppPV012\bin\Debug\Microsoft.IdentityModel.Abstractions.dll

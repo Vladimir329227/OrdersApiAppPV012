@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using OrdersApiAppPV012.Model.Entity;
+using OrdersApiAppPV012.Model.JWT;
 
 namespace OrdersApiAppPV012.Model
 {
@@ -8,6 +9,7 @@ namespace OrdersApiAppPV012.Model
     {
         //Таблицы
         public DbSet<Client> Clients { get;set; }
+        public DbSet<AuthOptions> AuthOptions { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<OrderProduct> OrderProducts { get; set; }

@@ -7,6 +7,13 @@ using OrdersApiAppPV012.Service.OrderInfoService;
 using OrdersApiAppPV012.Service.OrderService;
 using OrdersApiAppPV012.Service.OrderProductService;
 using OrdersApiAppPV012.Service.ProductService;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using OrdersApiAppPV012.Model.JWT;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,12 +28,58 @@ builder.Services.AddTransient<IDaoBill, BillController>();
 
 
 
+builder.Services.AddAuthorization();
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            // указывает, будет ли валидироваться издатель при валидации токена
+            ValidateIssuer = true,
+            // строка, представляющая издателя
+            ValidIssuer = AuthOptions.ISSUER,
+            // будет ли валидироваться потребитель токена
+            ValidateAudience = true,
+            // установка потребителя токена
+            ValidAudience = AuthOptions.AUDIENCE,
+            // будет ли валидироваться время существования
+            ValidateLifetime = true,
+            // установка ключа безопасности
+            IssuerSigningKey = AuthOptions.GetSymmetricSecurityKey(),
+            // валидация ключа безопасности
+            ValidateIssuerSigningKey = true,
+        };
+    });
+
+
+
 var app = builder.Build();
 
 
-app.MapGet("/", () => "Hello World!");
 
-// тестирование операций с таблицей клиента
+app.UseAuthentication();
+app.UseAuthorization();
+
+app.Map("/login/{username}", (string username) =>
+{
+    var claims = new List<Claim> { new Claim(ClaimTypes.Name, username) };
+    // создаем JWT-токен
+    var jwt = new JwtSecurityToken(
+        issuer: AuthOptions.ISSUER,
+        audience: AuthOptions.AUDIENCE,
+        claims: claims,
+        expires: DateTime.UtcNow.Add(TimeSpan.FromMinutes(2)),
+        signingCredentials: new SigningCredentials(AuthOptions.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256));
+
+
+    return new JwtSecurityTokenHandler().WriteToken(jwt);
+});
+
+app.Map("/data", [Authorize] () => new { message = "Hello World!" });
+
+
+
+app.MapGet("/", () => "Hello World!");
 
 //Client
 app.MapGet("/client/all", async (HttpContext context, IDaoClient dao) =>
